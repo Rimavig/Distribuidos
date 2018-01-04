@@ -1,0 +1,23 @@
+-----------------CREACIÓN DE LA BASE DE DATOS--------------------------------------------------
+[root@localhost]# mysql -u root -p
+mysql> create database newspaper;
+mysql> exit;
+[root@localhost]# cd usr
+[root@localhost usr]# mkdir distribuidos
+[root@localhost distribuidos]# vim codesql.sql
+[root@localhost distribuidos]# chmod 777 codesql.sql
+[root@localhost distribuidos]# cat codesql.sql
+CREATE TABLE noticias (id INT NOT NULL AUTO_INCREMENT, tittle VARCHAR(100) NOT
+NULL, url VARCHAR(100) NOT NULL, visitas INT(11) NOT NULL) ENGINE = innodb;
+[root@localhost distribuidos]# mysql -p netlinux < codesql.sql
+[root@localhost]# cd /var/lib/mysql-files
+[root@localhost mysql-files]# vim newsCorpora.csv
+[root@localhost mysql-files]#cd usr
+[root@localhost usr]# cd distribuidos
+[root@localhost distribuidos]# vim load_csv.sql
+[root@localhost distribuidos]# chmod 777 load_csv.sql
+[root@localhost distribuidos]# cat load_csv.sql
+LOAD DATA INFILE '/var/lib/mysql-files/newsCorpora.csv' replace INTO TABLE noticias FIELDS TERMINATED ',' LINES TERMINATED BY '\n';
+[root@localhost distribuidos]# mysql -p newspaper < load_csv.sql
+
+----------------------PHP PROCESSOR--------------------------------------------------
