@@ -6,6 +6,12 @@
 package microservicio;
 
 import java.util.LinkedList;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.spy.memcached.MemcachedClient;
 
 
 
@@ -23,12 +29,34 @@ public class Microservicio {
     
     public static void main(String[] args) {
         
-        Conexion con=new Conexion();
-        LinkedList<Noticia> lista=con.obtener();
-        
-        for(Noticia noticia: lista){
+        //El puerto default de memcached es 11211
+        InetSocketAddress[] servers = new InetSocketAddress[]{ new InetSocketAddress("127.0.0.1", 11211)};
+        MemcachedClient mc;
+        try {
+            mc = new MemcachedClient(servers);
+           LinkedList<Noticia> noticias=null;
+            //Cuando pase una hora, esto nos devolverá null
+//            valor = (String)mc.get("acum");
+            if (mc.get("noticias")==(null)){
+                Conexion con=new Conexion();
+                LinkedList<Noticia> lista=con.obtener();
+                //Así almacenamos un valor
+                //se pasa llave, duración en segundos, valor.
+                mc.set("noticias", 3600, lista);
+                //Lo siguiente funcionará durante una hora
+                noticias = (LinkedList<Noticia>)mc.get("noticias");
+            }else{
+                noticias = (LinkedList<Noticia>)mc.get("noticias");
+            }
+           for(Noticia noticia: noticias){
                 System.out.println(noticia);
-         }
+            }
+            mc.shutdown();
+            
+        } catch (IOException ex) {
+            System.out.println("ERROR");
+        }
+        
     }
         
     
