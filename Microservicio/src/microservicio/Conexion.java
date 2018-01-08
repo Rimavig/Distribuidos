@@ -23,7 +23,7 @@ public class Conexion {
             Class.forName("com.mysql.jdbc.Driver");
             cnx = DriverManager.getConnection("jdbc:mysql://localhost/newspaper", "root", "hotmail003");
             Statement st= cnx.createStatement();
-            System.out.println("si");
+            System.out.println("Se establecio con exito la conexion");
             PreparedStatement consulta = cnx.prepareStatement("SELECT id,visitas,publisher,title FROM noticias" );
             ResultSet resultado = consulta.executeQuery();
              LinkedList<Noticia> lista =new  LinkedList<Noticia>();
@@ -47,9 +47,9 @@ public class Conexion {
             return top10;
 
          } catch (SQLException ex) {
-             System.out.println("No se pudo conectar a la Base");
-         } catch (ClassNotFoundException ex) {
-             System.out.println("dasda");;
+             System.out.println("No se pudo conectar a la Base de datos");
+         } catch (Exception ex) {
+             System.out.println("Error");;
          }
        return null;
    }

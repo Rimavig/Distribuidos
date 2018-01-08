@@ -5,11 +5,13 @@
  */
 package microservicio;
 
+import java.io.Serializable;
+
 /**
  *
  * @author RICHARD
  */
-public class Noticia implements Comparable<Noticia> {
+public class Noticia implements Comparable<Noticia>, Serializable {
    private int id;
    private int visitas;
    private String title;
