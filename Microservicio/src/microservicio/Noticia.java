@@ -73,7 +73,7 @@ public class Noticia implements Comparable<Noticia>, Serializable {
 
     @Override
     public String toString() {
-        return "Noticia{" + "id=" + id + ", visitas=" + visitas + ", title=" + title + ", publisher=" + publisher + '}';
+        return "id=" + id + ",visitas=" + visitas + ",title=" + title + ",publisher=" + publisher ;
     }
     
 }
