@@ -5,13 +5,11 @@
  */
 package microservicio;
 
+import Thrift.Servidor;
 import java.util.LinkedList;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import net.spy.memcached.MemcachedClient;
+import org.apache.thrift.TException;
+
+
 
 
 
@@ -20,43 +18,39 @@ import net.spy.memcached.MemcachedClient;
  *
  * @author RICHARD
  */
-public class Microservicio {
+public class Microservicio implements Servidor.Iface {
 
     /**
      * @param args the command line arguments
      */
     
-    
+    private static LinkedList<Noticia> noticias;
     public static void main(String[] args) {
         
-        //El puerto default de memcached es 11211
-        InetSocketAddress[] servers = new InetSocketAddress[]{ new InetSocketAddress("127.0.0.1", 11211)};
-        MemcachedClient mc;
-        try {
-            mc = new MemcachedClient(servers);
-           LinkedList<Noticia> noticias=null;
-            //Cuando pase una hora, esto nos devolverá null
-//            valor = (String)mc.get("acum");
-            if (mc.get("noticias")==(null)){
-                Conexion con=new Conexion();
-                LinkedList<Noticia> lista=con.obtener();
-                //Así almacenamos un valor
-                //se pasa llave, duración en segundos, valor.
-                mc.set("noticias", 3600, lista);
-                //Lo siguiente funcionará durante una hora
-                noticias = (LinkedList<Noticia>)mc.get("noticias");
-            }else{
-                noticias = (LinkedList<Noticia>)mc.get("noticias");
-            }
-           for(Noticia noticia: noticias){
+        Conexion con =new Conexion();
+        con.guardarCache();
+         noticias=con.guardarCache();
+         for(Noticia noticia: noticias){
                 System.out.println(noticia);
-            }
-            mc.shutdown();
-            
-        } catch (IOException ex) {
-            System.out.println("ERROR");
-        }
-        
+         }
+        HiloServidor hs = new HiloServidor();
+        Thread t = new Thread(hs);
+        t.start();
+    }
+
+    @Override
+    public String top10(String dato1) throws TException {
+        String top="";
+        for(Noticia noticia: noticias){
+                top=top+noticia+";";
+         }
+      
+        return top;
+    }
+
+    @Override
+    public String optenerLista() throws TException {
+        return "dsada";
     }
         
     
