@@ -71,8 +71,8 @@ public class Conexion {
             if (mc.get("noticias")==(null)){
                 LinkedList<Noticia> lista=obtenerTop10();
                 //Así almacenamos un valor
-                //se pasa llave, duración en segundos, valor.
-                mc.set("noticias", 3600, lista);
+                //se pasa llave, duración en segundos, valor
+                mc.set("noticias", 86400, lista);
                 //Lo siguiente funcionará durante una hora
                 noticias = (LinkedList<Noticia>)mc.get("noticias");
             }else{

@@ -26,13 +26,11 @@ public class Microservicio implements Servidor.Iface {
     
     private static LinkedList<Noticia> noticias;
     public static void main(String[] args) {
-        
-        Conexion con =new Conexion();
-        con.guardarCache();
-         noticias=con.guardarCache();
-         for(Noticia noticia: noticias){
-                System.out.println(noticia);
-         }
+//        Conexion con =new Conexion();
+//        noticias=con.guardarCache();
+//        for(Noticia noticia: noticias){
+//            System.out.println(noticia);
+//       }
         HiloServidor hs = new HiloServidor();
         Thread t = new Thread(hs);
         t.start();
@@ -40,12 +38,16 @@ public class Microservicio implements Servidor.Iface {
 
     @Override
     public String top10(String dato1) throws TException {
+        Conexion con =new Conexion();
+        noticias=con.guardarCache();
+        for(Noticia noticia: noticias){
+            System.out.println(noticia);
+       } 
         String top="";
         for(Noticia noticia: noticias){
-                top=top+noticia+";";
-         }
-      
-        return top;
+            top=top+noticia+";";
+        }
+        return top;       
     }
 
     @Override

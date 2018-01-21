@@ -25,6 +25,7 @@ public class HiloServidor implements Runnable{
             System.err.println("Servidor en escucha puerto 7911...");
             server.serve();
             } catch (Exception e) {
+                System.out.println("No se puede escuchar el puerto 7911");
             }
         }
     }
